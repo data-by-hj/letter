@@ -1,0 +1,11 @@
+/login/, /logout/, /signup/ : 로그인 / 로그아웃 / 회원가입
+/home/ : 홈 화면 - 방목록, 설정 버튼, 방 생성 버튼 방 삭제 버튼
+/home/{room.id}/ : 방 화면 - 편지 목록, 편지 작성 버튼, 편지 삭제 버튼. 수정 버튼
+/home/setting/ : 설정 화면 - 이름, 비번 변경 가능
+/home/add_room/ : 방 생성 화면 - 방 이름, 추가할 유저 계정 입력 (최대 30명까지 초대 가능)
+/home/{room.id}/write/ : 편지 작성 화면 - 편지 제목, to, from 내용 입력 칸, 저장버튼, 기념일 선택 버튼
+/home/{room.id}/{letter.id} : 편지 상세 화면 - 편지 제목, to, from 내용, 삭제 버튼, 수정 버튼
+/home/{room.id}/{letter.id}/update/ : 편지 수정 화면 - 기존 편지 제목, to, from 내용 수정 가능 입력, 저장 버튼, 기존 기념일 입력 수정 입력
+/home/{room.id}/{letter.id}/delete/ : 삭제 
+/home/{room,id}/{letter.id}/comment/add/ : 댓글 작성 
+/home/{room.id}/{letter.id}/comment/{comment.id}/delete/ : 댓글 삭제

@@ -1,0 +1,32 @@
+___letter
+id PK 자동
+room FK
+auther FK 작성자 (user.id?)
+title 제목 
+content 내용
+anniversary 기념일 null 가능
+image 이미지 첨부 null 가능
+created_at 작성일 자동
+updated_at 수정일 자동
+
+___comment
+id PK 자동
+letter FK 어느 편지 (letter.id)
+auther 작성자 (user.id?)
+content 내용
+created_at 작성일 자동
+updated_at 수정일 자동
+
+___room
+id PK
+name 방 이름
+created_by FK (user.id?)
+created_at 생성일
+
+___room_Member
+id PK
+room FK (room.id)
+user FK (user.id?)
+
+___user
+django 기본
