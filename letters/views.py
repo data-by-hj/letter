@@ -89,3 +89,58 @@ def letter_write(request, room_id):
         return redirect('room_detail', room_id=room_id)
     else : #GET일때
         return render(request, 'letter_write.html', {'room_id': room_id})
+
+@login_required
+def letter_detail(request, letter_id):
+    letter = Letter.objects.get(id=letter_id)
+    comments = Comment.objects.filter(letter=letter)
+
+    return render(request, 'letter_detail.html', {'letter':letter, 'comments': comments})
+
+@login_required
+def letter_update(request, letter_id):
+    letter = Letter.objects.get(id=letter_id)
+    if letter.author != request.user:
+         return redirect('letter_detail', letter_id=letter_id)
+    if request.method == "POST":
+        
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        anniversary = request.POST.get("anniversary")
+        image = request.FILES.get("image")
+
+        letter.title = title
+        letter.content = content
+        letter.anniversary = anniversary
+        letter.image = image
+
+        letter.save()
+        return redirect('letter_detail', letter_id=letter_id)
+    else: # GET일때 
+        return render(request, 'letter_update.html', {'letter': letter})
+
+@login_required
+def letter_delete(request, letter_id):
+    letter = Letter.objects.get(id=letter_id)
+    room_id = letter.room.id
+    if letter.author != request.user:
+         return redirect('letter_detail', letter_id=letter_id)
+    letter.delete()
+    return redirect('room_detail', room_id=room_id)   
+
+@login_required
+def comment_add(request, letter_id):
+    if request.method =="POST":
+        comment = request.POST.get("comment")
+        letter = Letter.objects.get(id=letter_id)
+        Comment.objects.create(letter= letter, author = request.user, content=comment)
+        return redirect('letter_detail', letter_id=letter_id)
+
+@login_required
+def comment_delete(request,comment_id):
+    comment = Comment.objects.get(id=comment_id)
+    letter_id = comment.letter.id
+    if comment.author != request.user:
+         return redirect('letter_detail', letter_id=letter_id)
+    comment.delete()
+    return redirect('letter_detail', letter_id=letter_id)   
