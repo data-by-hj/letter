@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.models import User
 from .models import Room, RoomMember, Letter, Comment
+from .forms import LetterForm
 
 
 # Create your views here.
@@ -57,13 +58,15 @@ def setting(request):
         update_session_auth_hash(request, request.user) 
 
         return redirect('home')
+    else:
+        return render(request, 'setting.html')
     
 @login_required 
 def add_room(request):
     if request.method == "POST":
         room_name = request.POST.get('room_name')
         room = Room.objects.create(name = room_name, created_by=request.user)
-        RoomMember.objects.create(room_id = room, user_id= request.user)
+        RoomMember.objects.create(room=room, user=request.user)
         
         return redirect('home')
 
