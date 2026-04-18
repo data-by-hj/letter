@@ -66,3 +66,26 @@ def add_room(request):
         RoomMember.objects.create(room_id = room, user_id= request.user)
         
         return redirect('home')
+
+@login_required
+def room_detail(request, room_id):
+    room = Room.objects.get(id=room_id)
+    letters = Letter.objects.filter(room=room)
+        
+    return render(request, 'room_detail.html', {'letters':letters, 'room': room})
+
+@login_required
+def letter_write(request, room_id):
+    if request.method == "POST":
+        title = request.POST.get("title")
+        content = request.POST.get("content")
+        anniversary = request.POST.get("anniversary")
+        image = request.FILES.get("image")
+        room = Room.objects.get(id= room_id)
+        Letter.objects.create(room = room, 
+                              title = title, content= content, 
+                              anniversary= anniversary, image= image, 
+                              author= request.user)
+        return redirect('room_detail', room_id=room_id)
+    else : #GET일때
+        return render(request, 'letter_write.html', {'room_id': room_id})
